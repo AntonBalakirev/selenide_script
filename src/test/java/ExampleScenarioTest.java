@@ -1,3 +1,5 @@
+import com.codeborne.selenide.SelenideElement;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -11,17 +13,28 @@ public class ExampleScenarioTest {
         open("https://www.sberbank.ru/ru/person");
 
         // выбрать пункт меню - "Страхование"
-        $(By.xpath("//label[text()='Страхование']")).click();
+        $(By.xpath("//a[@aria-label='Меню  Страхование']")).click();
+
+        // выбрать пункт подменю - "СберСтрахование"
+        $(By.xpath("//a[text()='СберСтрахование' and contains(@class, 'link_second')]")).click();
+
+        // проверка открытия страницы "СберСтрахование"
+        Assert.assertEquals("Заголовок отсутствует/не соответствует требуемому",
+                "СберСтрахование - СберБанк", title());
 
         // выбрать пункт подменю - "Страхование путешественников"
-        $(By.xpath("//a[text()='Страхование путешественников']")).click();
-
-        // проверка открытия страницы "Страхование путешественников"
-        $(By.xpath("//div[contains(@class,'kit-col_xs_12')]/h1"))
-                .shouldHave(exactText("Страхование путешественников"));
+        SelenideElement element = $(By.xpath("//div[normalize-space()='Страхованиепутешественников']/div"));
+        element.scrollTo().click();
 
         // нажать кнопку "Оформить онлайн"
-        $(By.xpath("//b[text()='Оформить онлайн']"))
+        element.$(By.xpath("../following::div/a[text()='Оформить онлайн'][1]")).click();
+
+        // проверка открытия страницы "Страхование путешественников"
+        $(By.xpath("//h1[contains(@class, 's-hero-banner')]")).scrollTo().shouldBe(visible)
+                .shouldHave(text("Страхование путешественников"));
+
+        // нажать кнопку "Оформить онлайн"
+        $(By.xpath("//a[contains(@class, 's-hero-banner')]"))
                 .scrollTo().click();
 
         // выбрать тариф страхования "Минимальный"
