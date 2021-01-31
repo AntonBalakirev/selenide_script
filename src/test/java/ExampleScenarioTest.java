@@ -12,30 +12,27 @@ public class ExampleScenarioTest {
     public void exampleScenario() {
         open("https://www.sberbank.ru/ru/person");
 
-        // выбрать пункт меню - "Страхование"
-        $(By.xpath("//a[@aria-label='Меню  Страхование']")).click();
 
-        // выбрать пункт подменю - "СберСтрахование"
-        $(By.xpath("//a[text()='СберСтрахование' and contains(@class, 'link_second')]")).click();
+        // выбрать пункт меню - "Страхование"
+        $(By.xpath("//a[@aria-label='Страхование']")).click();
+
+        // выбрать пункт подменю - "Перейти в каталог"
+        $(By.xpath("//a[text()='Перейти в каталог' and contains(@class, 'link_second')]")).click();
 
         // проверка открытия страницы "СберСтрахование"
         Assert.assertEquals("Заголовок отсутствует/не соответствует требуемому",
-                "СберСтрахование - СберБанк", title());
+                "Оформить страховку в СберБанке — СберБанк", title());
 
         // выбрать пункт подменю - "Страхование путешественников"
-        SelenideElement element = $(By.xpath("//div[normalize-space()='Страхованиепутешественников']/div"));
-        element.scrollTo().click();
+        SelenideElement element = $(By.xpath("//h3[text()='Страхование для путешественников']"));
+        element.scrollTo();
 
         // нажать кнопку "Оформить онлайн"
-        element.$(By.xpath("../following::div/a[text()='Оформить онлайн'][1]")).click();
+        element.$(By.xpath("../../following::div/a[1]")).click();
 
         // проверка открытия страницы "Страхование путешественников"
-        $(By.xpath("//h1[contains(@class, 's-hero-banner')]")).scrollTo().shouldBe(visible)
+        $(By.xpath("//h2")).scrollTo().shouldBe(visible)
                 .shouldHave(text("Страхование путешественников"));
-
-        // нажать кнопку "Оформить онлайн"
-        $(By.xpath("//a[contains(@class, 's-hero-banner')]"))
-                .scrollTo().click();
 
         // выбрать тариф страхования "Минимальный"
         $(By.xpath("//h3[text()='Минимальная']"))
