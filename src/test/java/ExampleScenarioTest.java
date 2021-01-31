@@ -19,7 +19,7 @@ public class ExampleScenarioTest {
         // выбрать пункт подменю - "Перейти в каталог"
         $(By.xpath("//a[text()='Перейти в каталог' and contains(@class, 'link_second')]")).click();
 
-        // проверка открытия страницы "СберСтрахование"
+        // проверка открытия страницы "Страхование"
         Assert.assertEquals("Заголовок отсутствует/не соответствует требуемому",
                 "Оформить страховку в СберБанке — СберБанк", title());
 
@@ -28,7 +28,7 @@ public class ExampleScenarioTest {
         element.scrollTo();
 
         // нажать кнопку "Оформить онлайн"
-        element.$(By.xpath("../../following::div/a[1]")).click();
+        element.$(By.xpath("../../following-sibling::div//b[text()='Оформить онлайн']/..")).click();
 
         // проверка открытия страницы "Страхование путешественников"
         $(By.xpath("//h2")).scrollTo().shouldBe(visible)
